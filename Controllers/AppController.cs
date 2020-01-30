@@ -6,20 +6,23 @@ using System.Text;
 using System.Threading.Tasks;
 using DutchTreat.ViewModels;
 using DutchTreat.Services;
+using DutchTreat.Data;
 
 namespace DutchTreat.Controllers
 {
     public class AppController : Controller
     {
         private readonly IMailService mailservice;
+        private readonly IDutchRepository repository;
 
-        public AppController(IMailService mailservice)
+        public AppController(IMailService mailservice, IDutchRepository repository)
         {
             this.mailservice = mailservice;
+            this.repository = repository;
         }
         public IActionResult Index()
         {
-            //throw new InvalidOperationException();
+            //var results = this.context.Products.ToList();
             return View();
         }
         [HttpGet("contact")]
@@ -50,6 +53,11 @@ namespace DutchTreat.Controllers
         {
             ViewBag.Title = "About Us";
             return View();
+        }
+        public IActionResult Shop()
+        {
+            var results = this.repository.GetAllProducts();
+            return View(results);
         }
 
     }
