@@ -27,19 +27,19 @@ namespace DutchTreat
             var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope()) { 
             var seeder = scope.ServiceProvider.GetService<DutchSeeder>();
-            seeder.Seed();
+            seeder.SeedAsync().Wait();
             }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration(SetupConfigutarion)
+            .ConfigureAppConfiguration(SetupConfiguration)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
 
-        private static void SetupConfigutarion(HostBuilderContext ctx, IConfigurationBuilder builder)
+        private static void SetupConfiguration(HostBuilderContext ctx, IConfigurationBuilder builder)
         {
             //Removing the default configuration options
             builder.Sources.Clear();
